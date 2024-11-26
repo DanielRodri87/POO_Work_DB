@@ -1,17 +1,32 @@
-import redis as r
-import psycopg2 as pg
-import AplicacaoPrincipal as ap
+import redis
+import psycopg2
+# import AplicacaoPrincipal as ap
+from time import sleep
+
+import os
+
+import redis.exceptions
 
 class Conections:
     def __init__(self):
-        self.dbRedis = r.StrictRedis(host='localhost', port=6379, db=0)
-        self.dbPostgre = pg.connect(
-            dbname="mydatabase",
-            user="postgre",
-            password="admin1234",
-            host="localhost",
-            port="5432"
-        )
+        redis_host = os.getenv('HOST_TO_REDIS', 'localhost')
+        self.dbRedis = redis.Redis(host=redis_host, port=6379, decode_responses=True)
+
+        while True:
+            try:
+                post_host = os.getenv('HOST_TO_POSTGRES', 'localhost')
+                self.dbPostgre = psycopg2.connect(
+                    dbname="mydatabase",
+                    user="root",
+                    password="root",
+                    host=post_host,
+                    port="5432"
+                )
+                print("Conexao estabelecida")
+                break
+            except psycopg2.OperationalError:
+                print('Nao foi possivel conectar')
+                sleep(2)
     
     def fecharConexoes(self):
         self.dbRedis.close()
@@ -26,24 +41,23 @@ class Conections:
                     INSERT INTO pacotes (Destino, Origem, Peso, Tamanho)
                     VALUES (%s, %s, %s, %s)
                 """, (
-                    pacote[b'Destino'].decode('utf-8'),
-                    pacote[b'Origem'].decode('utf-8'),
-                    pacote[b'Peso'].decode('utf-8'),
-                    pacote[b'Tamanho'].decode('utf-8')
+                    pacote['Destino'],
+                    pacote['Origem'],
+                    pacote['Peso'],
+                    pacote['Tamanho']
                 ))
                 
-                if i % 1000 == 0:
-                    self.dbPostgre.commit()
-                    print(f"{i} registros transferidos.")
+                self.dbPostgre.commit()
+                print(f"{i} registros transferidos.")
             
             self.dbPostgre.commit() 
             print("Transferência concluída com sucesso.")
             
         except Exception as e:
             print(f"Erro durante a transferência de dados: {e}")
-
-        
-        cursor.close()
+            self.dbPostgre.rollback()
+        finally:
+            cursor.close()
 
     def CriaTabela(self):
         cursor = self.dbPostgre.cursor()
