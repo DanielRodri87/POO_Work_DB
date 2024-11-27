@@ -14,7 +14,6 @@ class Postgre:
         cursor = self.dbPostgre.cursor()
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS pacotes (
-                ID INT PRIMARY KEY,
                 Destino VARCHAR(50),
                 Origem VARCHAR(50),
                 Peso VARCHAR(50),
@@ -24,12 +23,12 @@ class Postgre:
         self.dbPostgre.commit()
         cursor.close()
 
-    def inserirPacote(self, id, destino, origem, peso, tamanho):
+    def inserirPacote(self, destino, origem, peso, tamanho):
         cursor = self.dbPostgre.cursor()
         cursor.execute("""
-            INSERT INTO pacotes (ID, Destino, Origem, Peso, Tamanho) 
-            VALUES (%s, %s, %s, %s, %s)
-        """, (id, destino, origem, peso, tamanho))
+            INSERT INTO pacotes (Destino, Origem, Peso, Tamanho) 
+            VALUES (%s, %s, %s, %s)
+        """, (destino, origem, peso, tamanho))
         self.dbPostgre.commit()
         cursor.close()
 
@@ -40,22 +39,22 @@ class Postgre:
         cursor.close()
         return pacotes
     
-    def atualizarPacote(self, id, peso_novo, tamanho_novo):
+    def atualizarPacote(self, destino, peso_novo, tamanho_novo):
         cursor = self.dbPostgre.cursor()
         cursor.execute("""
             UPDATE pacotes 
             SET Peso = %s, Tamanho = %s
-            WHERE ID = %s
-        """, (peso_novo, tamanho_novo, id))
+            WHERE Destino = %s
+        """, (peso_novo, tamanho_novo, destino))
         self.dbPostgre.commit()
         cursor.close()
 
-    def deletarPacote(self, id):
+    def deletarPacote(self, destino):
         cursor = self.dbPostgre.cursor()
         cursor.execute("""
             DELETE FROM pacotes 
-            WHERE ID = %s
-        """, (id,))
+            WHERE Destino = %s
+        """, (destino,))
         self.dbPostgre.commit()
         cursor.close()
 
@@ -83,12 +82,11 @@ def main():
         opcao = input("Escolha uma opção: ")
         
         if opcao == '1':
-            id_pacote = int(input("Digite o ID do pacote (valor numérico): "))
             destino = input("Digite o destino do pacote: ")
             origem = input("Digite a origem do pacote: ")
             peso = input("Digite o peso do pacote: ")
             tamanho = input("Digite o tamanho do pacote: ")
-            db.inserirPacote(id_pacote, destino, origem, peso, tamanho)
+            db.inserirPacote(destino, origem, peso, tamanho)
             print("Pacote inserido com sucesso!")
 
         elif opcao == '2':
@@ -96,20 +94,20 @@ def main():
             if pacotes:
                 print("Pacotes cadastrados:")
                 for pacote in pacotes:
-                    print(f"ID: {pacote[0]}, Destino: {pacote[1]}, Origem: {pacote[2]}, Peso: {pacote[3]}, Tamanho: {pacote[4]}")
+                    print(f"Destino: {pacote[0]}, Origem: {pacote[1]}, Peso: {pacote[2]}, Tamanho: {pacote[3]}")
             else:
                 print("Nenhum pacote encontrado.")
 
         elif opcao == '3':
-            id_pacote = int(input("Digite o ID do pacote a ser atualizado: "))
+            destino = input("Digite o destino do pacote a ser atualizado: ")
             peso_novo = input("Digite o novo peso do pacote: ")
             tamanho_novo = input("Digite o novo tamanho do pacote: ")
-            db.atualizarPacote(id_pacote, peso_novo, tamanho_novo)
+            db.atualizarPacote(destino, peso_novo, tamanho_novo)
             print("Pacote atualizado com sucesso!")
 
         elif opcao == '4':
-            id_pacote = int(input("Digite o ID do pacote a ser deletado: "))
-            db.deletarPacote(id_pacote)
+            destino = input("Digite o destino do pacote a ser deletado: ")
+            db.deletarPacote(destino)
             print("Pacote deletado com sucesso!")
 
         elif opcao == '5':
@@ -122,4 +120,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
