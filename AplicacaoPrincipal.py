@@ -102,7 +102,7 @@ class Postgre:
         cursor.close()
         return pacotes
     
-    def atualizarPacote(self, destino, peso_novo, tamanho_novo):
+    def atualizarPacote(self, destino, peso_novo=None, tamanho_novo=None, origem_nova=None):
         """
         summary
             Atualiza o peso e tamanho de um pacote com base no destino.
@@ -119,13 +119,25 @@ class Postgre:
             None
         """
         cursor = self.dbPostgre.cursor()
-        cursor.execute("""
-            UPDATE pacotes 
-            SET Peso = %s, Tamanho = %s
-            WHERE Destino = %s
-        """, (peso_novo, tamanho_novo, destino))
+        cursor.execute("SELECT * FROM pacotes WHERE Destino = %s", (destino,))
+        pacote = cursor.fetchone()
+
+        if not pacote:
+            print("Pacote não encontrado.")
+            cursor.close()
+            return
+
+        if peso_novo is not None:
+            cursor.execute("UPDATE pacotes SET Peso = %s WHERE Destino = %s", (peso_novo, destino))
+        if tamanho_novo is not None:
+            cursor.execute("UPDATE pacotes SET Tamanho = %s WHERE Destino = %s", (tamanho_novo, destino))
+        if origem_nova is not None:
+            cursor.execute("UPDATE pacotes SET Origem = %s WHERE Destino = %s", (origem_nova, destino))
+        
         self.dbPostgre.commit()
         cursor.close()
+        print("Pacote atualizado com sucesso.")
+
 
     def deletarPacote(self, destino):
         """
@@ -213,16 +225,49 @@ def main():
             if pacotes:
                 print("Pacotes cadastrados:")
                 for pacote in pacotes:
-                    print(f"Destino: {pacote[0]}, Origem: {pacote[1]}, Peso: {pacote[2]}, Tamanho: {pacote[3]}")
+                    if (int(pacote[0]) % 1000 == 0):
+                        print(f"Destino: {pacote[0]}, Origem: {pacote[1]}, Peso: {pacote[2]}, Tamanho: {pacote[3]}")
             else:
                 print("Nenhum pacote encontrado.")
-
         elif opcao == '3':
             destino = input("Digite o destino do pacote a ser atualizado: ")
-            peso_novo = input("Digite o novo peso do pacote: ")
-            tamanho_novo = input("Digite o novo tamanho do pacote: ")
-            db.atualizarPacote(destino, peso_novo, tamanho_novo)
-            print("Pacote atualizado com sucesso!")
+            print("Escolha o que deseja atualizar:")
+            print("1. Peso")
+            print("2. Tamanho")
+            print("3. Origem")
+            print("4. Peso e Tamanho")
+            print("5. Origem e Peso")
+            print("6. Origem e Tamanho")
+            print("7. Todos")
+            escolha = input("Escolha uma opção: ")
+
+            peso_novo = tamanho_novo = origem_nova = None
+
+            if escolha == '1':
+                peso_novo = input("Digite o novo peso do pacote: ")
+            elif escolha == '2':
+                tamanho_novo = input("Digite o novo tamanho do pacote: ")
+            elif escolha == '3':
+                origem_nova = input("Digite a nova origem do pacote: ")
+            elif escolha == '4':
+                peso_novo = input("Digite o novo peso do pacote: ")
+                tamanho_novo = input("Digite o novo tamanho do pacote: ")
+            elif escolha == '5':
+                origem_nova = input("Digite a nova origem do pacote: ")
+                peso_novo = input("Digite o novo peso do pacote: ")
+            elif escolha == '6':
+                origem_nova = input("Digite a nova origem do pacote: ")
+                tamanho_novo = input("Digite o novo tamanho do pacote: ")
+            elif escolha == '7':
+                origem_nova = input("Digite a nova origem do pacote: ")
+                peso_novo = input("Digite o novo peso do pacote: ")
+                tamanho_novo = input("Digite o novo tamanho do pacote: ")
+            else:
+                print("Opção inválida. Tente novamente.")
+                continue
+            
+            db.atualizarPacote(destino, peso_novo, tamanho_novo, origem_nova)
+
 
         elif opcao == '4':
             destino = input("Digite o destino do pacote a ser deletado: ")

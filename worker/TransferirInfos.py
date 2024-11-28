@@ -168,6 +168,12 @@ class Conections:
 
         # Cria um cursor para executar comandos no PostgreSQL
         cursor = self.dbPostgre.cursor()
+
+        cursor.execute("""
+            DROP TABLE IF EXISTS pacotes
+        """)
+    
+
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS pacotes (
                 Destino VARCHAR(50),
