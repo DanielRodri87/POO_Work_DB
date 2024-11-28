@@ -114,7 +114,8 @@ class Postgre:
                 Novo peso do pacote.
             tamanho_novo : str
                 Novo tamanho do pacote.
-        
+            origem_nova : str
+                Parâmetro opcional para atualizar a origem
         return
             None
         """
