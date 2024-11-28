@@ -64,10 +64,10 @@ class Conections:
                 post_host = os.getenv('HOST_TO_POSTGRES', 'localhost')
                 self.dbPostgre = psycopg2.connect(
                     dbname="mydatabase", # Nome do banco de dados
-                    user="root", # Usuário do banco de dados
-                    password="root", # Senha do banco de dados
-                    host=post_host, # Host do banco de dados
-                    port="5432" # Porta do banco de dados
+                    user="root",         # Usuário do banco de dados
+                    password="root",     # Senha do banco de dados
+                    host=post_host,      # Host do banco de dados
+                    port="5432"          # Porta do banco de dados
                 )
                 print("Conexao estabelecida")
                 break # Saída do loop
@@ -117,9 +117,9 @@ class Conections:
                     VALUES (%s, %s, %s, %s)
                 """, (
                     pacote['Destino'], # Insere o campo 'Destino'
-                    pacote['Origem'], # Insere o campo 'Origem'
-                    pacote['Peso'], # Insere o campo 'Peso'
-                    pacote['Tamanho'] # Insere o campo 'Tamanho'
+                    pacote['Origem'],  # Insere o campo 'Origem'
+                    pacote['Peso'],    # Insere o campo 'Peso'
+                    pacote['Tamanho']  # Insere o campo 'Tamanho'
                 ))
                 
                 
@@ -131,20 +131,6 @@ class Conections:
             print("Transferência concluída com sucesso.")
             
         except Exception as e:
-
-            '''
-            summary
-                Trata erros ocorridos durante a transferência de dados do Redis para PostgreSQL.
-                Exibe a mensagem do erro e realiza rollback para desfazer transações parciais.
-            
-            parameters
-                e : Exception
-                    Exceção gerada durante a execução.
-            
-            return
-                None
-            '''
-
             print(f"Erro durante a transferência de dados: {e}")
             # Desfaz transações parciais em caso de erro
             self.dbPostgre.rollback()
@@ -190,7 +176,7 @@ class Conections:
 
 # Execução principal
 if __name__ == "__main__":
-    con = Conections() # Instância da classe Conections
-    con.CriaTabela() # Cria a tabela no PostgreSQL
+    con = Conections()   # Instância da classe Conections
+    con.CriaTabela()     # Cria a tabela no PostgreSQL
     con.tranferirinfos() # Transfere os dados do Redis para PostgreSQL
     con.fecharConexoes() # Fecha as conexões ativas
