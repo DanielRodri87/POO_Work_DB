@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y htop && apt-get clean
 # Configura o diretório de trabalho
 WORKDIR /app
 
-# Copia o código do worker para o contêiner
+# Copia o código para o contêiner
 COPY . .
 
 # Instala as dependências
@@ -17,5 +17,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Define a variável de ambiente
 ENV HOST_TO_REDIS=redis
 
-# Comando padrão para executar o worker
+# Comando padrão para execução
 CMD ["python", "PovoarRedis.py"]

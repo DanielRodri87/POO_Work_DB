@@ -14,11 +14,11 @@ COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copia o código do worker para o contêiner
+# Copia o código para o contêiner
 COPY . .
 
 ENV HOST_TO_REDIS=redis
 ENV HOST_TO_POSTGRES=postgres
 
-# Comando padrão para executar o worker
+# Comando padrão para executação
 CMD ["python", "TransferirInfos.py"]
