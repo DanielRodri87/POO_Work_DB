@@ -56,7 +56,7 @@ Após o povoamento, espera-se os seguintes cenários:
 - Execução do docker stats
 ![WhatsApp Image 2024-12-01 at 15 22 35](https://github.com/user-attachments/assets/b9c4a1f8-7d96-4bba-bbc5-30803b12c9f1)
 
-## 🔗Aproveite o sistema
+## 🔗 Aproveite o sistema
 1. Clone o repositório em sua máquina
 ```
 git clone https://github.com/DanielRodri87/POO_Work_DB/
@@ -91,7 +91,7 @@ docker stats
 ```
 9. Explore a aplicação principal e se divirta!
 
-## Detalhes
+## 🔗 Detalhes
 🔧 Desenvolvedores
 1. Iago Roberto - iago.roberto@ufpi.edu.br
 2. Luis Gustavo - luis.ramos@ufpi.edu.br
