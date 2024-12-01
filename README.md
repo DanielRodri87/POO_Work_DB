@@ -38,7 +38,7 @@ x64
 A aplicação consiste nas seguintes etapas:
 1. Povoar o Redis com um número de registros pré-definidos
 2. Após isso, o worker será responsável por pegar os dados no Redis e transferir para o PostGreSQL
-3. Enquanto os dadso são transferidos, a aplicação principal (PostGreSQL) continua funcionando com algumas operações comuns
+3. Enquanto os dados são transferidos, a aplicação principal (PostGreSQL) continua funcionando com algumas operações comuns
 
 Após o povoamento, espera-se os seguintes cenários:
 - O worker fazendo a transferência de dados do Redis para o PostGreSQL
@@ -82,6 +82,9 @@ python3 TransferirInfos.py
 python3 AplicacaoPrincipal.py
 ```
 7. Em um novo terminal, verifique a usabilidade da aplicação na máquina
+```
+docker exec -it poo_work_db-worker-1 bash
+```
 ```
 htop
 ```
