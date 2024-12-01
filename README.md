@@ -98,6 +98,7 @@ docker stats
 3. Daniel Rodrigues - daniel.sousa@ufpi.edu.br
 4. Rita de Cássia - ritarodriguesilva19@gmail.com
 5. Francinaldo de Sousa - francinaldo.barbosa@ufpi.edu.br
+6. Cristina de Moura - cristina.moura@ufpi.edu.br
 
 🔧 Licença
 
