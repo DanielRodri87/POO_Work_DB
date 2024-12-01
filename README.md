@@ -100,4 +100,5 @@ docker stats
 5. Francinaldo de Sousa - francinaldo.barbosa@ufpi.edu.br
 
 🔧 Licença
+
 Essa aplicação está regida sobre a licença definida em `LICENSE`
