@@ -1,7 +1,7 @@
-import redis # Biblioteca para interação com o Redis
-import psycopg2 # Biblioteca para conexão com PostgreSQL
-from time import sleep # Função para aguardo de tentativas de conexão
-import os # Biblioteca para acesso de variáveis de ambiente
+import redis            # Biblioteca para interação com o Redis
+import psycopg2         # Biblioteca para conexão com PostgreSQL
+from time import sleep  # Função para aguardo de tentativas de conexão
+import os               # Biblioteca para acesso de variáveis de ambiente
 import redis.exceptions # Exceções relacionadas ao Redis
 
 
@@ -35,7 +35,7 @@ class Conections:
     '''
 
 
-    def __init__(self):
+    def __init__(self) -> None:
 
         '''
         summary
@@ -76,7 +76,7 @@ class Conections:
                 print('Nao foi possivel conectar')
                 sleep(2) # Espera de 2 segundos antes de tentar novamente
     
-    def fecharConexoes(self):
+    def fecharConexoes(self) -> None:
         '''
         summary
             Fecha as conexões ativas com o Redis e o PostgreSQL.
@@ -90,7 +90,7 @@ class Conections:
         self.dbRedis.close() # Fecha a conexão com o Redis
         self.dbPostgre.close() # Fecha a conexão com o PostgreSQL
     
-    def tranferirinfos(self):
+    def tranferirinfos(self) -> None:
 
         '''
         summary
@@ -138,7 +138,7 @@ class Conections:
             # Fecha o cursor após a execução
             cursor.close() 
 
-    def CriaTabela(self):
+    def CriaTabela(self) -> None:
 
         '''
         summary

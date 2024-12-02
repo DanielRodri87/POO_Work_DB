@@ -1,4 +1,4 @@
-import psycopg2 as pg
+import psycopg2 as pg # Importa a biblioteca psycopg2 para conexão com PostgreSQL
 
 class Postgre:
     """
@@ -19,7 +19,7 @@ class Postgre:
         fecharConexao()
             Fecha a conexão com o banco de dados PostgreSQL.
     """
-    def __init__(self):
+    def __init__(self) -> None:
         """
         summary
             Inicializa a conexão com o banco de dados PostgreSQL.
@@ -35,7 +35,7 @@ class Postgre:
             port="5432"           # Porta de conexão do PostgreSQL
         )
     
-    def CriarTabela(self):
+    def CriarTabela(self) -> None:
         """
         summary
             Cria a tabela 'pacotes' no banco de dados, caso não exista.
@@ -58,7 +58,7 @@ class Postgre:
         self.dbPostgre.commit()
         cursor.close()
 
-    def inserirPacote(self, destino, origem, peso, tamanho):
+    def inserirPacote(self, destino, origem, peso, tamanho) -> None:
         """
         summary
             Insere um novo pacote no banco de dados.
@@ -84,7 +84,7 @@ class Postgre:
         self.dbPostgre.commit()
         cursor.close()
 
-    def consultarPacotes(self):
+    def consultarPacotes(self) -> list:
         """
         summary
             Consulta e retorna todos os pacotes cadastrados na tabela.
@@ -102,7 +102,7 @@ class Postgre:
         cursor.close()
         return pacotes
     
-    def atualizarPacote(self, destino, peso_novo=None, tamanho_novo=None, origem_nova=None):
+    def atualizarPacote(self, destino, peso_novo=None, tamanho_novo=None, origem_nova=None) -> None:
         """
         summary
             Atualiza o peso e tamanho de um pacote com base no destino.
@@ -140,7 +140,7 @@ class Postgre:
         print("Pacote atualizado com sucesso.")
 
 
-    def deletarPacote(self, destino):
+    def deletarPacote(self, destino) -> None:
         """
         summary
             Remove um pacote da tabela com base no destino.
@@ -160,7 +160,7 @@ class Postgre:
         self.dbPostgre.commit()
         cursor.close()
 
-    def fecharConexao(self):
+    def fecharConexao(self) -> None:
         """
         summary
             Fecha a conexão com o banco de dados PostgreSQL.
@@ -173,7 +173,7 @@ class Postgre:
         """
         self.dbPostgre.close()
 
-def exibir_menu():
+def exibir_menu() -> None:
     """
     summary
         Exibe o menu principal do sistema para o usuário.
@@ -195,7 +195,7 @@ def exibir_menu():
     print("5. Sair")
     print("=====================================")
 
-def main():
+def main() -> None:
     """
     summary
         Função principal do programa. Controla o fluxo do sistema de pacotes.
@@ -213,7 +213,7 @@ def main():
         exibir_menu()
         opcao = input("Escolha uma opção: ")
         
-        if opcao == '1':
+        if opcao == '1': # Inserir pacote
             destino = input("Digite o destino do pacote: ")
             origem = input("Digite a origem do pacote: ")
             peso = input("Digite o peso do pacote: ")
@@ -221,7 +221,7 @@ def main():
             db.inserirPacote(destino, origem, peso, tamanho)
             print("Pacote inserido com sucesso!")
 
-        elif opcao == '2':
+        elif opcao == '2': # Consultar pacotes
             pacotes = db.consultarPacotes()
             if pacotes:
                 print("Pacotes cadastrados:")
@@ -230,7 +230,8 @@ def main():
                         print(f"Destino: {pacote[0]}, Origem: {pacote[1]}, Peso: {pacote[2]}, Tamanho: {pacote[3]}")
             else:
                 print("Nenhum pacote encontrado.")
-        elif opcao == '3':
+                
+        elif opcao == '3': # Atualizar pacote
             destino = input("Digite o destino do pacote a ser atualizado: ")
             print("Escolha o que deseja atualizar:")
             print("1. Peso")
@@ -244,6 +245,7 @@ def main():
 
             peso_novo = tamanho_novo = origem_nova = None
 
+            # Atualiza os campos de acordo com a escolha do usuário
             if escolha == '1':
                 peso_novo = input("Digite o novo peso do pacote: ")
             elif escolha == '2':
@@ -269,19 +271,19 @@ def main():
             
             db.atualizarPacote(destino, peso_novo, tamanho_novo, origem_nova)
 
-
-        elif opcao == '4':
+        elif opcao == '4': # Deletar pacote
             destino = input("Digite o destino do pacote a ser deletado: ")
             db.deletarPacote(destino)
             print("Pacote deletado com sucesso!")
 
-        elif opcao == '5':
+        elif opcao == '5': # Sair
             db.fecharConexao()
             print("Conexão encerrada. Saindo do sistema...")
             break
 
-        else:
+        else: # Opção inválida
             print("Opção inválida. Tente novamente.")
 
+# Executa a função principal
 if __name__ == "__main__":
     main()
